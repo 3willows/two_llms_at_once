@@ -33,7 +33,7 @@ const Home = async () => {
           <li key={post.id} className="flex items-center gap-x-4">
             <div>{post.name}</div>
             <div>
-              <Link href={`/readPrisma/${post.id}`}>Go To</Link>
+              <Link href={`/readSQLite/${post.id}`}>Go To</Link>
             </div>
           </li>
         ))}
