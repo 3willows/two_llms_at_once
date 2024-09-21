@@ -1,7 +1,8 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma"
+import Link from "next/link"
 
 const Home = async () => {
-  const posts = await prisma.post.findMany();
+  const posts = await prisma.post.findMany()
 
   return (
     <div className="p-4 flex flex-col gap-y-4">
@@ -9,11 +10,16 @@ const Home = async () => {
 
       <ul className="flex flex-col gap-y-2">
         {posts.map((post) => (
-          <li key={post.id}>{post.name}</li>
+          <li key={post.id} className="flex items-center gap-x-4">
+            <div>{post.name}</div>
+            <div>
+              <Link href={`/readPrisma/${post.id}`}>Go To</Link>
+            </div>
+          </li>
         ))}
       </ul>
     </div>
-  );
+  )
 };
 
 export default Home;
