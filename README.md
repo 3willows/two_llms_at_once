@@ -23,8 +23,8 @@ LLMs
 
 Database
 
--Prisma
--SQLite
+- Prisma
+- SQLite
 
 ## Useful resources
 
