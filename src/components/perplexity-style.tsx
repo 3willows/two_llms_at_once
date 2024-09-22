@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AskGoogle } from "@/app/google"
 import { AskOpenAI } from "@/app/openAI"
 import { createPost } from "@/app/writesqlite/createPost"
+import { savePrompt } from "@/app/savePrompt"
 
 export function PerplexityStyle() {
   const [prompt, setPrompt] = useState("")
@@ -17,9 +18,12 @@ export function PerplexityStyle() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    formData.set("name", prompt)
 
+    formData.set("name", prompt)
     await createPost(formData)
+
+    formData.set("content", prompt)
+    await savePrompt(formData)
 
     const openAiResult = await AskOpenAI(prompt)
     setOpenAiResponse(openAiResult)
