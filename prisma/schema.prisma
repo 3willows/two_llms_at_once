@@ -16,3 +16,8 @@ model Prompt {
   id   String @id @default(cuid())
   content String
 }
+
+model Google {
+  id   String @id @default(cuid())
+  content String
+}

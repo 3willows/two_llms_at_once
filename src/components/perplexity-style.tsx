@@ -9,6 +9,7 @@ import { AskGoogle } from "@/app/google"
 import { AskOpenAI } from "@/app/openAI"
 import { createPost } from "@/app/writesqlite/createPost"
 import { savePrompt } from "@/app/savePrompt"
+import { saveGoogle } from "@/app/saveGoogle"
 
 export function PerplexityStyle() {
   const [prompt, setPrompt] = useState("")
