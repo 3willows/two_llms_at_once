@@ -21,3 +21,8 @@ model Google {
   id   String @id @default(cuid())
   content String
 }
+
+model Open {
+  id   String @id @default(cuid())
+  content String
+}
