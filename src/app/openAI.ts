@@ -1,6 +1,7 @@
 "use server"
 import { createOpenAI } from "@ai-sdk/openai"
 import { generateText } from "ai"
+import { streamText } from 'ai';
 import { saveOpenAI } from "./saveOpenAI"
 
 const openai = createOpenAI({
@@ -12,6 +13,15 @@ export async function AskOpenAI(promptFromUser: string) {
     model: openai("gpt-4-turbo"),
     prompt: promptFromUser,
   })
+
+  const { textStream } = await streamText({
+    model: openai('gpt-4-turbo'),
+    prompt: promptFromUser,
+  });
+  
+  for await (const textPart of textStream) {
+    console.log(textPart);
+  }
 
   await saveOpenAI(text)
 
