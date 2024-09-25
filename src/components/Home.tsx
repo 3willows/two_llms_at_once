@@ -6,12 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { AskGoogle } from "@/app/google"
-import { AskOpenAI } from "@/app/openAI"
+import { AskMistral } from "@/app/mistral"
+// import { AskOpenAI } from "@/app/openAI"
 // import { savePrompt } from "@/app/savePrompt"
 
 export function Home() {
   const [prompt, setPrompt] = useState("")
-  const [openAiResponse, setOpenAiResponse] = useState("")
+  const [mistralResult, setMistralResult]= useState("")
   const [googleResponse, setGoogleResponse] = useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,8 +22,8 @@ export function Home() {
     formData.set("content", prompt)
     // await savePrompt(formData)
 
-    const openAiResult = await AskOpenAI(prompt)
-    setOpenAiResponse(openAiResult)
+    const mistralResult = await AskMistral(prompt)
+    setMistralResult(mistralResult)
     const googleResult = await AskGoogle(prompt)
     setGoogleResponse(googleResult)
   }
@@ -47,11 +48,11 @@ export function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>Open AI response</CardTitle>
+            <CardTitle>Mistral response</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
-              {openAiResponse || "No result yet. Try searching for something!"}
+              {mistralResult || "No result yet. Try searching for something!"}
             </p>
           </CardContent>
         </Card>
