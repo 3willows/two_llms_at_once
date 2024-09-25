@@ -7,11 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id   String @id @default(cuid())
-  name String
-}
-
 model Prompt {
   id   String @id @default(cuid())
   content String
@@ -22,7 +17,7 @@ model Google {
   content String
 }
 
-model Open {
+model OpenAI {
   id   String @id @default(cuid())
   content String
 }

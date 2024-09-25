@@ -1,6 +1,6 @@
 import { revalidatePath } from 'next/cache';
 import { prisma } from "@/lib/prisma"
-import Link from "next/link"
+// import Link from "next/link"
 
 const createPost = async (formData: FormData) => {
   'use server';
@@ -17,7 +17,7 @@ const createPost = async (formData: FormData) => {
 };
 
 const Home = async () => {
-  const posts = await prisma.post.findMany()
+  // const posts = await prisma.post.findMany()
 
   return (
     <div className="p-4 flex flex-col gap-y-4">
@@ -28,7 +28,7 @@ const Home = async () => {
         <button type="submit">Create</button>
       </form>
 
-      <ul className="flex flex-col gap-y-2">
+      {/* <ul className="flex flex-col gap-y-2">
         {posts.map((post) => (
           <li key={post.id} className="flex items-center gap-x-4">
             <div>{post.name}</div>
@@ -37,7 +37,7 @@ const Home = async () => {
             </div>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   )
 };

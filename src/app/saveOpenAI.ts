@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
  
 export async function saveOpenAI(content: string) {
   "use server"
-  await prisma.open.create({
+  await prisma.openAI.create({
     data: {
       content,
     },
