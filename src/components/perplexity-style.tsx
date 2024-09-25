@@ -22,6 +22,7 @@ export function PerplexityStyle() {
 
   const [messages, setMessages] = useState<CoreMessage[]>([])
   const [input, setInput] = useState("")
+  const [data, setData] = useState<any>()
 
   const customHandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -40,8 +41,9 @@ export function PerplexityStyle() {
     setInput("")
 
     const result = await continueConversation(newMessages)
+    setData(result.data);
 
-    for await (const content of readStreamableValue(result)) {
+    for await (const content of readStreamableValue(result.message)) {
       setMessages([
         ...newMessages,
         {
@@ -63,7 +65,7 @@ export function PerplexityStyle() {
             type="text"
             placeholder="Enter your query"
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             className="flex-grow"
           />
           <Button type="submit">Search</Button>
@@ -78,6 +80,8 @@ export function PerplexityStyle() {
             {/* <p>
               {openAiResponse || "No result yet. Try searching for something!"}
             </p> */}
+            {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+
             {messages.map((m, i) => (
               <div key={i} className="whitespace-pre-wrap">
                 {m.role === "user" ? "User: " : "AI: "}
