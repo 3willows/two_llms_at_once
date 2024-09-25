@@ -7,11 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2 } from "lucide-react"
 
 import { AskGoogle } from "@/app/google"
-import { AskMistral } from "@/app/mistral"
+// import { AskMistral } from "@/app/mistral"
+import { AskOpenAI } from "@/app/openAI"
 
 export function Home() {
   const [prompt, setPrompt] = useState("")
-  const [mistralResult, setMistralResult] = useState("")
+  // const [mistralResult, setMistralResult] = useState("")
+  const [openAiResult, setOpenAiResult] = useState("")
   const [googleResponse, setGoogleResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -23,8 +25,10 @@ export function Home() {
     formData.set("content", prompt)
 
     try {
-      const mistralResult = await AskMistral(prompt)
-      setMistralResult(mistralResult)
+      // const mistralResult = await AskMistral(prompt)
+      // setMistralResult(mistralResult)
+      const openAiResult = await AskOpenAI(prompt)
+      setOpenAiResult(openAiResult)
       const googleResult = await AskGoogle(prompt)
       setGoogleResponse(googleResult)
     } catch (error) {
@@ -63,7 +67,7 @@ export function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>Mistral response</CardTitle>
+            <CardTitle>Open AI response</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -72,7 +76,7 @@ export function Home() {
               </div>
             ) : (
               <p>
-                {mistralResult || "No result yet. Try searching for something!"}
+                {openAiResult || "No result yet. Try searching for something!"}
               </p>
             )}
           </CardContent>
@@ -88,7 +92,8 @@ export function Home() {
               </div>
             ) : (
               <p>
-                {googleResponse || "No result yet. Try searching for something!"}
+                {googleResponse ||
+                  "No result yet. Try searching for something!"}
               </p>
             )}
           </CardContent>
