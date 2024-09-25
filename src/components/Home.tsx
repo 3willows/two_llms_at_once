@@ -4,28 +4,34 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Loader2 } from "lucide-react"
 
 import { AskGoogle } from "@/app/google"
 import { AskMistral } from "@/app/mistral"
-// import { AskOpenAI } from "@/app/openAI"
-// import { savePrompt } from "@/app/savePrompt"
 
 export function Home() {
   const [prompt, setPrompt] = useState("")
-  const [mistralResult, setMistralResult]= useState("")
+  const [mistralResult, setMistralResult] = useState("")
   const [googleResponse, setGoogleResponse] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(e.currentTarget)
 
     formData.set("content", prompt)
-    // await savePrompt(formData)
 
-    const mistralResult = await AskMistral(prompt)
-    setMistralResult(mistralResult)
-    const googleResult = await AskGoogle(prompt)
-    setGoogleResponse(googleResult)
+    try {
+      const mistralResult = await AskMistral(prompt)
+      setMistralResult(mistralResult)
+      const googleResult = await AskGoogle(prompt)
+      setGoogleResponse(googleResult)
+    } catch (error) {
+      console.error("Error fetching results:", error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -42,7 +48,16 @@ export function Home() {
             onChange={(e) => setPrompt(e.target.value)}
             className="flex-grow"
           />
-          <Button type="submit">Search</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Searching...
+              </>
+            ) : (
+              "Search"
+            )}
+          </Button>
         </div>
       </form>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -51,9 +66,15 @@ export function Home() {
             <CardTitle>Mistral response</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>
-              {mistralResult || "No result yet. Try searching for something!"}
-            </p>
+            {isLoading ? (
+              <div className="flex justify-center items-center h-24">
+                <Loader2 className="h-8 w-8 animate-spin" />
+              </div>
+            ) : (
+              <p>
+                {mistralResult || "No result yet. Try searching for something!"}
+              </p>
+            )}
           </CardContent>
         </Card>
         <Card>
@@ -61,9 +82,15 @@ export function Home() {
             <CardTitle>Gemini response</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>
-              {googleResponse || "No result yet. Try searching for something!"}
-            </p>
+            {isLoading ? (
+              <div className="flex justify-center items-center h-24">
+                <Loader2 className="h-8 w-8 animate-spin" />
+              </div>
+            ) : (
+              <p>
+                {googleResponse || "No result yet. Try searching for something!"}
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
