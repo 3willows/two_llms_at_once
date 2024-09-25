@@ -7,34 +7,49 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { AskGoogle } from "@/app/google"
 import { AskOpenAI } from "@/app/openAI"
-import { createPost } from "@/app/writesqlite/createPost"
 import { savePrompt } from "@/app/savePrompt"
 
-import { useChat } from "ai/react"
+import { type CoreMessage } from "ai"
+import { continueConversation } from "@/app/actions"
+import { readStreamableValue } from "ai/rsc"
+
+export const maxDuration = 30
 
 export function PerplexityStyle() {
   // const [prompt, setPrompt] = useState("")
   // const [openAiResponse, setOpenAiResponse] = useState("")
   // const [googleResponse, setGoogleResponse] = useState("")
 
-  const { messages, input, handleInputChange, handleSubmit } = useChat()
+  const [messages, setMessages] = useState<CoreMessage[]>([])
+  const [input, setInput] = useState("")
 
   const customHandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-
     formData.set("name", input)
-    await createPost(formData)
 
     formData.set("content", input)
     await savePrompt(formData)
 
-    // const openAiResult = await AskOpenAI(input)
-    // setOpenAiResponse(openAiResult)
-    // const googleResult = await AskGoogle(input)
-    // setGoogleResponse(googleResult)
+    const newMessages: CoreMessage[] = [
+      ...messages,
+      { content: input, role: "user" },
+    ]
 
-    handleSubmit(e)
+    setMessages(newMessages)
+    setInput("")
+
+    const result = await continueConversation(newMessages)
+
+    for await (const content of readStreamableValue(result)) {
+      setMessages([
+        ...newMessages,
+        {
+          role: "assistant",
+          content: content as string,
+        },
+      ])
+    }
   }
 
   return (
@@ -48,7 +63,7 @@ export function PerplexityStyle() {
             type="text"
             placeholder="Enter your query"
             value={input}
-            onChange={handleInputChange}
+            onChange={e => setInput(e.target.value)}
             className="flex-grow"
           />
           <Button type="submit">Search</Button>
@@ -63,10 +78,10 @@ export function PerplexityStyle() {
             {/* <p>
               {openAiResponse || "No result yet. Try searching for something!"}
             </p> */}
-            {messages.map((m) => (
-              <div key={m.id} className="whitespace-pre-wrap">
+            {messages.map((m, i) => (
+              <div key={i} className="whitespace-pre-wrap">
                 {m.role === "user" ? "User: " : "AI: "}
-                {m.content}
+                {m.content as string}
               </div>
             ))}
           </CardContent>
