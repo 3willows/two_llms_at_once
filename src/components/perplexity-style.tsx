@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { AskGoogle } from "@/app/google"
 import { AskOpenAI } from "@/app/openAI"
-import { savePrompt } from "@/app/savePrompt"
+// import { savePrompt } from "@/app/savePrompt"
 
 export function PerplexityStyle() {
   const [prompt, setPrompt] = useState("")
@@ -19,7 +19,7 @@ export function PerplexityStyle() {
     const formData = new FormData(e.currentTarget)
 
     formData.set("content", prompt)
-    await savePrompt(formData)
+    // await savePrompt(formData)
 
     const openAiResult = await AskOpenAI(prompt)
     setOpenAiResponse(openAiResult)
