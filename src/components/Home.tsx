@@ -9,7 +9,7 @@ import { AskGoogle } from "@/app/google"
 import { AskOpenAI } from "@/app/openAI"
 // import { savePrompt } from "@/app/savePrompt"
 
-export function PerplexityStyle() {
+export function Home() {
   const [prompt, setPrompt] = useState("")
   const [openAiResponse, setOpenAiResponse] = useState("")
   const [googleResponse, setGoogleResponse] = useState("")
@@ -30,7 +30,7 @@ export function PerplexityStyle() {
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-2xl font-bold mb-4 text-center">
-        Ask 2 LLMs at once (in development) (Very short time)
+        Ask 2 LLMs at once (in development)
       </h1>
       <form onSubmit={handleSubmit} className="mb-6">
         <div className="flex gap-2">

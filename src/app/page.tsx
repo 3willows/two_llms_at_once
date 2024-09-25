@@ -1,7 +1,7 @@
 "use client"
 
-import { PerplexityStyle } from "@/components/perplexity-style"
+import { Home } from "@/components/Home"
 
 export default function Page() {
-  return <PerplexityStyle></PerplexityStyle>
+  return <Home></Home>
 }
