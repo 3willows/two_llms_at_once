@@ -8,9 +8,11 @@ export async function AskGoogle(id:number, prompt: string) {
   const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string)
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
 
-  const result = await model.generateContent(prompt)
+  const overallResult= await model.generateContent(prompt)
 
-  await saveGoogle(id, prompt)
+  const text = overallResult.response.text()
 
-  return result.response.text()
+  await saveGoogle(id, text)
+
+  return text
 }
