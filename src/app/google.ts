@@ -10,7 +10,7 @@ export async function AskGoogle(id:number, prompt: string) {
 
   const result = await model.generateContent(prompt)
 
-  saveGoogle(id, prompt)
+  await saveGoogle(id, prompt)
 
   return result.response.text()
 }
