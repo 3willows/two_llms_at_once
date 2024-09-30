@@ -22,14 +22,14 @@ export function Home() {
 
     formData.set("content", prompt)
 
-    savePrompt(prompt)
+    const id = await savePrompt(prompt)
 
     setIsLoading(true)
 
     try {
       const [mistralResult, googleResult] = await Promise.all([
-        AskMistral(prompt),
-        AskGoogle(prompt)
+        AskMistral(id, prompt),
+        AskGoogle(id, prompt)
       ])
       
       setMistralResult(mistralResult)
