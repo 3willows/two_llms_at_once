@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react"
 
 import { AskGoogle } from "@/app/google"
 import { AskMistral } from "@/app/mistral"
+import { savePrompt } from "@/app/savePrompt"
 
 export function Home() {
   const [prompt, setPrompt] = useState("")
@@ -20,6 +21,8 @@ export function Home() {
     const formData = new FormData(e.currentTarget)
 
     formData.set("content", prompt)
+
+    savePrompt(prompt)
 
     setIsLoading(true)
 
