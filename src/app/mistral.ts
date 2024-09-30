@@ -13,7 +13,7 @@ export async function AskMistral(id: number , promptFromUser: string) {
     prompt: promptFromUser
   });
 
-  saveMistral(id, text)
+  await saveMistral(id, text)
 
   return text
 }
