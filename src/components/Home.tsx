@@ -8,28 +8,28 @@ import { Loader2 } from "lucide-react"
 
 import { AskGoogle } from "@/app/google"
 import { AskMistral } from "@/app/mistral"
-// import { AskOpenAI } from "@/app/openAI"
 
 export function Home() {
   const [prompt, setPrompt] = useState("")
   const [mistralResult, setMistralResult] = useState("")
-  // const [openAiResult, setOpenAiResult] = useState("")
   const [googleResponse, setGoogleResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setIsLoading(true)
     const formData = new FormData(e.currentTarget)
 
     formData.set("content", prompt)
 
+    setIsLoading(true)
+
     try {
-      const mistralResult = await AskMistral(prompt)
+      const [mistralResult, googleResult] = await Promise.all([
+        AskMistral(prompt),
+        AskGoogle(prompt)
+      ])
+      
       setMistralResult(mistralResult)
-      // const openAiResult = await AskOpenAI(prompt)
-      // setOpenAiResult(openAiResult)
-      const googleResult = await AskGoogle(prompt)
       setGoogleResponse(googleResult)
     } catch (error) {
       console.error("Error fetching results:", error)
