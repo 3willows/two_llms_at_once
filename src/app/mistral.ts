@@ -9,7 +9,7 @@ apiKey: process.env.MISTRAL_API_KEY,
 
 export async function AskMistral(id: number , promptFromUser: string) {
   const { text } = await generateText({
-    model: mistral('mistral-large-latest'),
+    model: mistral('mistral-small-latest'),
     prompt: promptFromUser
   });
 
