@@ -5,7 +5,7 @@ import { createClient } from "../../utils/supabase/server"
 export async function saveGoogle(id: number, google_answer: string): Promise<boolean> {
   const supabase = createClient()
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("records")
     .update({ google_answer })
     .eq('id', id)
@@ -16,7 +16,7 @@ export async function saveGoogle(id: number, google_answer: string): Promise<boo
     console.error("Error updating data:", error)
     return false
   } else {
-    console.log("Updated data:", data)
+    console.log("Google answered")
     return true
   }
 }

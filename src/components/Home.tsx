@@ -22,16 +22,33 @@ export function Home() {
 
     formData.set("content", prompt)
 
-    const id = await savePrompt(prompt)
-
     setIsLoading(true)
 
     try {
+      const rateLimitResponse = await fetch("/api/check-rate-limit")
+
+      const { success, remaining, limit, reset } =
+        await rateLimitResponse.json()
+
+      if (success) {
+        console.log(
+          `Remaining requests: ${remaining}\nRequests limit: ${limit}\nWindow resets at: ${new Date(
+            reset
+          ).toLocaleString()}`
+        )
+      }
+
+      if (!success) {
+        console.log("Rate limit exceeded. Please try again later.")
+        return
+      }
+      const id = await savePrompt(prompt)
+
       const [mistralResult, googleResult] = await Promise.all([
         AskMistral(id, prompt),
-        AskGoogle(id, prompt)
+        AskGoogle(id, prompt),
       ])
-      
+
       setMistralResult(mistralResult)
       setGoogleResponse(googleResult)
     } catch (error) {
