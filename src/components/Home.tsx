@@ -15,7 +15,6 @@ export function Home() {
   const [mistralResult, setMistralResult] = useState("")
   const [googleResponse, setGoogleResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -24,16 +23,23 @@ export function Home() {
     formData.set("content", prompt)
 
     setIsLoading(true)
-    setError("")
 
     try {
+      const rateLimitResponse = await fetch("/api/check-rate-limit")
 
-      const rateLimitResponse = await fetch('/api/check-rate-limit')
+      const { success, remaining, limit, reset } =
+        await rateLimitResponse.json()
 
-      const { success } = await rateLimitResponse.json()
+      if (success) {
+        console.log(
+          `Remaining requests: ${remaining}\nRequests limit: ${limit}\nWindow resets at: ${new Date(
+            reset
+          ).toLocaleString()}`
+        )
+      }
 
       if (!success) {
-        setError("Rate limit exceeded. Please try again later.")
+        console.log("Rate limit exceeded. Please try again later.")
         return
       }
       const id = await savePrompt(prompt)
