@@ -16,8 +16,7 @@ export async function savePrompt(prompt: string) {
     console.error("Error inserting data:", error)
     return null
   } else {
-    console.log("Inserted data:", data)
-    console.dir(data.id)
+    console.log("Data inserted:", data)
     return data.id
   }
 }

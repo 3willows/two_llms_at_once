@@ -16,7 +16,7 @@ export async function saveGoogle(id: number, google_answer: string): Promise<boo
     console.error("Error updating data:", error)
     return false
   } else {
-    console.log("Updated data:", data)
+    console.log("Google answered")
     return true
   }
 }

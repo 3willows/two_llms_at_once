@@ -16,7 +16,7 @@ export async function saveMistral(id: number, mistral_answer: string): Promise<b
     console.error("Error updating data:", error)
     return false
   } else {
-    console.log("Updated data:", data)
+    console.log("Mistral answered")
     return true
   }
 }
